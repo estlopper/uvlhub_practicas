@@ -42,6 +42,11 @@ jobs:
         pip install pip-review
         pip-review --local
 
+    - name: Security audit of dependencies (Python 3.10)
+      run: |
+        pip install pip-audit
+        pip-audit
+
     - name: Run tests (Python 3.10)
       run: |
         pip install codacy-coverage
@@ -78,6 +83,11 @@ jobs:
         pip install pip-review
         pip-review --local
 
+    - name: Security audit of dependencies (Python 3.11)
+      run: |
+        pip install pip-audit
+        pip-audit
+
     - name: Run tests (Python 3.11)
       run: |
         pip install codacy-coverage
@@ -113,6 +123,11 @@ jobs:
       run: |
         pip install pip-review
         pip-review --local
+
+    - name: Security audit of dependencies (Python 3.12)
+      run: |
+        pip install pip-audit
+        pip-audit
 
     - name: Run tests (Python 3.12)
       run: |
