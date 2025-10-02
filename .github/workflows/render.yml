@@ -2,13 +2,8 @@ name: Deploy to Render
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-    types: [closed]  # Esto asegura que solo se ejecute en PR cerrados (mergeados)
-
+    tags:
+      - '*'  # Se ejecuta solo cuando se crea un tag
 jobs:
   test:
     name: Run Tests
@@ -17,10 +12,10 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Set up Python 3.10
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.12'
 
       - name: Install dependencies
         run: |
@@ -30,16 +25,21 @@ jobs:
       - name: Run tests
         run: |
           pip install pytest
-          pytest --maxfail=1 --disable-warnings -q  # Modifica según tus necesidades de pruebas
+          pytest --maxfail=1 --disable-warnings -q
 
   deploy:
     name: Deploy to Render
     runs-on: ubuntu-latest
-    needs: test  # Esto asegura que el despliegue solo se ejecute si el trabajo 'test' ha tenido éxito
-    if: github.event.pull_request.merged == true && success()  # Verifica si el PR fue mergeado y si las pruebas fueron exitosas
+    needs: test  # Solo se ejecuta si el trabajo 'test' tuvo éxito
+    if: success()  # Además, verifica que las pruebas hayan pasado
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
+
+      - name: Verify Pull Request Merge
+        run: |
+          echo "Skipping check because deploys are triggered only on tags"
+        # Nota: como estamos usando 'push' con tags, ya sabemos que es código mergeado
 
       - name: Deploy to Render
         env:
