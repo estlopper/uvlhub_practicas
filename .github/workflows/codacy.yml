@@ -37,12 +37,18 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Check for outdated dependencies
+      run: |
+        pip install pip-review
+        pip-review --local 
+        
     - name: Upload coverage to Codacy
       run: |
         pip install codacy-coverage
         coverage run -m pytest app/modules/ --ignore-glob='*selenium*'
         coverage xml 
         python-codacy-coverage -r coverage.xml
+        
       env:
         FLASK_ENV: testing
         MARIADB_HOSTNAME: 127.0.0.1
