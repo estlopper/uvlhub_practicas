@@ -3,15 +3,16 @@ name: Deploy to Render
 on:
     push:
       tags:
-      - 'v*' # Realizar un despliegue solo cuando se crea un tag en GitHub
+      - 'v*' 
     pull_request:
       branches:
         - main
 
 jobs:
+
   testing:
 
-    name: Run Tests # Permitir que se realice el despliegue solo si todas las pruebas han pasado
+    name: Run Tests
     runs-on: ubuntu-latest
 
     services:
@@ -26,7 +27,7 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-  steps:
+    steps:
 
     - uses: actions/checkout@v4
 
